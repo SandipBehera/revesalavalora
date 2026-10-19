@@ -1,0 +1,408 @@
+<ng-template #mono>
+  <svg class="mono" viewBox="0 0 100 100" aria-hidden="true">
+    @for (k of [0, 1, 2, 3, 4, 5]; track k) {
+      <polygon points="50,8 86.4,29 86.4,71 50,92 13.6,71 13.6,29"
+               [attr.transform]="'translate(50 50) rotate(' + k * 7 + ') scale(' + (1 - k * 0.075) + ') translate(-50 -50)'"
+               [style.--i]="k" />
+    }
+  </svg>
+</ng-template>
+
+<!-- Preloader -->
+<div class="loader" [class.done]="!loading()" aria-hidden="true">
+  <div class="loader-inner">
+    <ng-container [ngTemplateOutlet]="mono" />
+    <p class="loader-word"><em>La</em> VALORA</p>
+    <span class="loader-bar"><i></i></span>
+  </div>
+</div>
+
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+
+<!-- Navigation -->
+<header class="nav" [class.solid]="scrolled()" [class.open]="menuOpen()">
+  <div class="wrap nav-row">
+    <a href="#top" class="brand" aria-label="La Valora home">
+      <ng-container [ngTemplateOutlet]="mono" />
+      <span><em>La</em> VALORA</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      @for (l of nav; track l.href) { <a [href]="l.href">{{ l.label }}</a> }
+    </nav>
+    <a class="nav-call" [href]="'tel:' + phone"><app-icon name="phone" [size]="14" />{{ phoneDisplay }}</a>
+    <button class="burger" (click)="menuOpen.set(!menuOpen())" [attr.aria-expanded]="menuOpen()" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+  </div>
+  <div class="drawer">
+    @for (l of nav; track l.href; let i = $index) {
+      <a [href]="l.href" (click)="menuOpen.set(false)" [style.--d]="i"><small>0{{ i + 1 }}</small>{{ l.label }}</a>
+    }
+    <a class="btn btn-gold" [href]="'tel:' + phone">Call {{ phoneDisplay }}</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="hero" [class.go]="!loading()">
+    <div class="hero-media">
+      <img src="images/build1.jpg" alt="La Valora villas exterior" data-parallax="-0.25" fetchpriority="high" />
+    </div>
+    <div class="hero-shade"></div>
+    <div class="hero-content wrap">
+      <p class="eyebrow hero-fade" style="--d:0">Revasa &nbsp;·&nbsp; By Reliance Builders</p>
+      <h1 class="hero-title" aria-label="La Valora">
+        @for (ch of heroTitle; track $index) {
+          <span class="ch" [class.sp]="ch === ' '" [class.it]="$index < 2" [style.--d]="$index" aria-hidden="true">{{ ch === ' ' ? ' ' : ch }}</span>
+        }
+      </h1>
+      <div class="hero-rule"></div>
+      <p class="hero-tag hero-fade" style="--d:4"><em>home today, heritage tomorrow.</em></p>
+      <p class="hero-sub hero-fade" style="--d:5">Luxury 4 &amp; 5 BHK villas on 72.25 acres near Financial District, Hyderabad</p>
+      <div class="hero-cta hero-fade" style="--d:6">
+        <a href="#contact" class="btn btn-gold" data-magnetic>Book a Site Visit <app-icon name="arrow" [size]="16" /></a>
+        <a href="#overview" class="btn btn-ghost" data-magnetic>Explore the Estate</a>
+      </div>
+    </div>
+    <div class="hero-meta wrap hero-fade" style="--d:7">
+      <span>RERA No: P01100010542</span>
+      <a href="#overview" class="scroll-cue" aria-label="Scroll down"><i></i>Scroll</a>
+      <span>Kardanur, Telangana</span>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      @for (r of [0, 1]; track r) {
+        @for (m of marquee; track m) { <span>{{ m }}</span><b>◆</b> }
+      }
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <section id="overview" class="section ivory">
+    <div class="wrap overview">
+      <div class="ov-text">
+        <p class="eyebrow" data-reveal>The Project</p>
+        <h2 class="display" data-reveal>
+          <span class="line"><span>A welcome worthy</span></span>
+          <span class="line"><span>of <em>heritage.</em></span></span>
+        </h2>
+        <div class="rule" data-reveal></div>
+        <p class="lead" data-reveal>Spread across 72.25 magnificent acres, La Valora is a testament to refined living. With 558 thoughtfully designed residences and an 84,000+ sq.ft clubhouse, every detail speaks of legacy and luxury.</p>
+        <p data-reveal>Nestled near Financial District, Hyderabad, La Valora offers unparalleled connectivity with world-class amenities designed to delight all ages.</p>
+        <p class="permit" data-reveal>HMDA Permission No: 012817/LO/HMDA/3450/SKP/2024</p>
+      </div>
+      <div class="ov-media">
+        <figure class="img-reveal main" data-reveal>
+          <div class="img-par" data-parallax="-0.08"><img src="images/build2.jpg" alt="La Valora villa facade" loading="lazy" /></div>
+        </figure>
+        <figure class="img-reveal small" data-reveal>
+          <div class="img-par" data-parallax="-0.05"><img src="images/build3.jpg" alt="Pool at La Valora" loading="lazy" /></div>
+        </figure>
+        <div class="ov-badge" data-reveal>
+          <span>Since</span><strong>1988</strong><span>Reliance Builders</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap stats">
+      @for (s of stats; track s.unit; let i = $index) {
+        <div class="stat" data-reveal [style.--d]="i">
+          <app-icon [name]="s.icon" [size]="26" [stroke]="1.2" />
+          <div class="stat-num" [attr.data-count]="s.value" [attr.data-decimals]="s.decimals" [attr.data-suffix]="s.suffix">0</div>
+          <div class="stat-unit">{{ s.unit }}</div>
+          <div class="stat-label">{{ s.label }}</div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Amenities -->
+  <section id="amenities" class="section noir">
+    <div class="wrap">
+      <div class="head center">
+        <p class="eyebrow" data-reveal>World-Class Living</p>
+        <h2 class="display" data-reveal>
+          <span class="line"><span>Amenities designed to</span></span>
+          <span class="line"><span><em>delight all ages.</em></span></span>
+        </h2>
+      </div>
+      <div class="amen">
+        <figure class="amen-media img-reveal" data-reveal>
+          <div class="img-par" data-parallax="-0.08"><img src="images/build4.jpg" alt="Lifestyle amenities" loading="lazy" /></div>
+          <figcaption><strong data-count="70" data-suffix="+">0</strong><span>Premium Amenities</span></figcaption>
+        </figure>
+        <div class="amen-body" data-reveal>
+          <div class="tabs" role="tablist">
+            @for (a of amenities; track a.id) {
+              <button role="tab" [attr.aria-selected]="amenityTab() === a.id" [class.on]="amenityTab() === a.id" (click)="amenityTab.set(a.id)">
+                <app-icon [name]="a.icon" [size]="15" />{{ a.label }}
+              </button>
+            }
+          </div>
+          @for (a of [activeAmenity()]; track a.id) {
+            <ul class="amen-list">
+              @for (item of a.items; track item; let i = $index) {
+                <li [style.--d]="i"><i></i>{{ item }}</li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Residences -->
+  <section id="residences" class="section ivory">
+    <div class="wrap">
+      <div class="head split">
+        <div>
+          <p class="eyebrow" data-reveal>Floor Plans</p>
+          <h2 class="display" data-reveal>
+            <span class="line"><span>Spaces crafted for</span></span>
+            <span class="line"><span><em>every lifestyle.</em></span></span>
+          </h2>
+        </div>
+        <div class="seg" data-reveal role="tablist">
+          @for (p of plans; track p.id) {
+            <button role="tab" [attr.aria-selected]="planTab() === p.id" [class.on]="planTab() === p.id" (click)="planTab.set(p.id)">{{ p.label }}</button>
+          }
+          <span class="seg-ink" [class.right]="planTab() === '5bhk'"></span>
+        </div>
+      </div>
+
+      <!-- Reveal lives on the wrapper: the card below is re-created on every tab switch,
+           and the scroll observer only watches elements that exist on first render. -->
+      <div data-reveal>
+      @for (p of [activePlan()]; track p.id) {
+        <div class="plan">
+          <div class="plan-card">
+            <div class="plan-top">
+              <div>
+                <h3>{{ p.label }} <em>Villa</em></h3>
+                <p class="plan-tag">{{ p.tagline }}</p>
+              </div>
+              <div class="plan-area"><strong>{{ p.area }}</strong><span>Sq.Ft</span></div>
+            </div>
+            <div class="plan-grid">
+              <div><app-icon name="bed" [size]="22" [stroke]="1.2" /><strong>{{ p.beds }}</strong><span>Bedrooms</span></div>
+              <div><app-icon name="bath" [size]="22" [stroke]="1.2" /><strong>{{ p.baths }}</strong><span>Bathrooms</span></div>
+              <div><app-icon name="layers" [size]="22" [stroke]="1.2" /><strong>G+2</strong><span>Floors</span></div>
+              <div><app-icon name="car" [size]="22" [stroke]="1.2" /><strong>{{ p.parking }}</strong><span>Parking</span></div>
+            </div>
+            <a href="#contact" class="btn btn-dark" data-magnetic>Request Floor Plan <app-icon name="arrow" [size]="16" /></a>
+          </div>
+          <div class="plan-side">
+            <h4>Key Highlights</h4>
+            <ol>
+              @for (h of p.highlights; track $index) {
+                <li [style.--d]="$index"><span>{{ ($index + 1).toString().padStart(2, '0') }}</span>{{ h }}</li>
+              }
+            </ol>
+            <blockquote>
+              <p class="eyebrow">Value Built on Values</p>
+              <p>Every La Valora residence features premium specifications including engineered wooden flooring, biometric door locks, reinforced shear wall construction, and 10-feet main doors.</p>
+            </blockquote>
+          </div>
+        </div>
+      }
+      </div>
+    </div>
+  </section>
+
+  <!-- Specifications -->
+  <section class="section sand">
+    <div class="wrap">
+      <div class="head center">
+        <p class="eyebrow" data-reveal>Premium Quality</p>
+        <h2 class="display" data-reveal>
+          <span class="line"><span>Built to <em>endure.</em></span></span>
+        </h2>
+      </div>
+      <div class="specs">
+        @for (s of specs; track s.title; let i = $index) {
+          <article class="spec" data-reveal [style.--d]="i % 3">
+            <span class="spec-no">0{{ i + 1 }}</span>
+            <app-icon [name]="s.icon" [size]="30" [stroke]="1.1" />
+            <h4>{{ s.title }}</h4>
+            <p>{{ s.desc }}</p>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section id="gallery" class="section noir gallery">
+    <div class="wrap head split">
+      <div>
+        <p class="eyebrow" data-reveal>Gallery</p>
+        <h2 class="display" data-reveal>
+          <span class="line"><span>Moments between</span></span>
+          <span class="line"><span><em>the miles.</em></span></span>
+        </h2>
+      </div>
+      <div class="g-ctrl" data-reveal>
+        <button aria-label="Previous" (click)="scrollGallery(track, -1)"><app-icon name="left" [size]="20" /></button>
+        <button aria-label="Next" (click)="scrollGallery(track, 1)"><app-icon name="right" [size]="20" /></button>
+      </div>
+    </div>
+    <div class="g-track" #track data-reveal>
+      @for (g of gallery; track g.src; let i = $index) {
+        <button class="g-item" (click)="lightbox.set(i)" [attr.aria-label]="'Open ' + g.label">
+          <img [src]="g.src" [alt]="g.alt" loading="lazy" />
+          <span class="g-cap"><small>0{{ i + 1 }} / 0{{ gallery.length }}</small>{{ g.label }}</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- Location -->
+  <section id="location" class="section ivory">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow" data-reveal>Strategic Location</p>
+        <h2 class="display" data-reveal>
+          <span class="line"><span>Connected to what</span></span>
+          <span class="line"><span><em>matters most.</em></span></span>
+        </h2>
+      </div>
+      <div class="loc">
+        <div class="map img-reveal" data-reveal>
+          <iframe title="La Valora location map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3854.2780540491362!2d78.2177651!3d17.520053900000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcbf30031109953%3A0x5bdb09bf9c1639b8!2sRevasa%20La%20Valora!5e1!3m2!1sen!2sin!4v1775059443281!5m2!1sen!2sin"></iframe>
+          <div class="map-tag"><app-icon name="pin" [size]="16" />Kardanur, Telangana 502300</div>
+        </div>
+        <ul class="places" data-reveal>
+          @for (p of places; track p.name; let i = $index) {
+            <li [style.--d]="i" [style.--w]="(p.time / 40) * 100 + '%'">
+              <app-icon [name]="p.icon" [size]="18" [stroke]="1.3" />
+              <span class="pl-name">{{ p.name }}</span>
+              <span class="pl-time"><b>{{ p.time }}</b> mins</span>
+              <i class="pl-bar"></i>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section contact">
+    <div class="contact-bg"><img src="images/build1.jpg" alt="" loading="lazy" data-parallax="-0.12" /></div>
+    <div class="wrap contact-grid">
+      <div class="contact-copy">
+        <p class="eyebrow" data-reveal>Get In Touch</p>
+        <h2 class="display" data-reveal>
+          <span class="line"><span>Schedule your</span></span>
+          <span class="line"><span><em>exclusive visit.</em></span></span>
+        </h2>
+        <p data-reveal>Experience La Valora in person — walk the estate, see the clubhouse and explore the villas with our sales team.</p>
+        <a class="contact-call" [href]="'tel:' + phone" data-reveal>
+          <span class="cc-ic"><app-icon name="phone" [size]="20" /></span>
+          <span><small>Call us</small>{{ phoneDisplay }}</span>
+        </a>
+        <a class="contact-call" [href]="whatsapp" target="_blank" rel="noopener" data-reveal>
+          <span class="cc-ic"><app-icon name="mail" [size]="20" /></span>
+          <span><small>WhatsApp</small>Chat with us</span>
+        </a>
+      </div>
+
+      <div class="form-card" data-reveal>
+          <form (ngSubmit)="submit()" novalidate>
+            <h3>Enquire <em>Now</em></h3>
+            <label class="field" [class.err]="errors()['name']">
+              <input name="name" [(ngModel)]="form.name" placeholder=" " autocomplete="name" />
+              <span>Full Name</span>
+              @if (errors()['name']) { <small>{{ errors()['name'] }}</small> }
+            </label>
+            <label class="field" [class.err]="errors()['email']">
+              <input name="email" type="email" [(ngModel)]="form.email" placeholder=" " autocomplete="email" />
+              <span>Email Address</span>
+              @if (errors()['email']) { <small>{{ errors()['email'] }}</small> }
+            </label>
+            <label class="field" [class.err]="errors()['phone']">
+              <input name="phone" type="tel" [(ngModel)]="form.phone" placeholder=" " autocomplete="tel" />
+              <span>Phone Number</span>
+              @if (errors()['phone']) { <small>{{ errors()['phone'] }}</small> }
+            </label>
+            <div class="chips">
+              <span>Interested in</span>
+              @for (c of ['4 BHK', '5 BHK']; track c) {
+                <button type="button" [class.on]="form.config === c" (click)="form.config = c">{{ c }}</button>
+              }
+            </div>
+            @if (errors()['form']) { <p class="form-error">{{ errors()['form'] }}</p> }
+            <button type="submit" class="btn btn-gold full" data-magnetic [disabled]="sending()">
+              {{ sending() ? 'Sending…' : 'Submit Enquiry' }} <app-icon name="arrow" [size]="16" />
+            </button>
+            <p class="fine">By submitting, you consent to be contacted about this project by phone, SMS, WhatsApp and email.</p>
+          </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-mark" data-reveal>
+      <ng-container [ngTemplateOutlet]="mono" />
+      <p class="foot-word"><em>La</em> VALORA</p>
+      <p class="foot-tag"><em>home today, heritage tomorrow.</em></p>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <h5>Explore</h5>
+        @for (l of nav; track l.href) { <a [href]="l.href">{{ l.label }}</a> }
+      </div>
+      <div>
+        <h5>Visit</h5>
+        <p>Revasa La Valora<br />Kardanur, Telangana 502300<br />Near Financial District, Hyderabad</p>
+        <a [href]="'tel:' + phone">{{ phoneDisplay }}</a>
+      </div>
+      <div>
+        <h5>Approvals</h5>
+        <p>RERA No: P01100010542</p>
+        <p>HMDA Permission No:<br />012817/LO/HMDA/3450/SKP/2024</p>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <p>Reliance Builders is a Hyderabad regional developer, founded in 1988, with no connection to Reliance Industries or the Ambani group. "Revasa" is Reliance Builders' contemporary brand line.</p>
+      <p>This website is for informational purposes only. Images, specifications and floor plans are illustrative and subject to change at the sole discretion of the developer. Prospective buyers should verify all details, approvals and pricing directly with the developer before making a purchase decision.</p>
+    </div>
+    <div class="foot-bottom">
+      <span>© {{ year }} Revasa La Valora. All rights reserved.</span>
+      <span>Value Built on Values</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile action bar -->
+<div class="actionbar" [class.show]="showBar()">
+  <a href="#contact"><app-icon name="mail" [size]="18" />Enquire</a>
+  <a [href]="'tel:' + phone"><app-icon name="phone" [size]="18" />Call</a>
+  <a [href]="whatsapp" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp
+  </a>
+</div>
+
+<!-- Lightbox -->
+@if (lightbox() !== null) {
+  <div class="lightbox" (click)="lightbox.set(null)" role="dialog" aria-modal="true">
+    <button class="lb-close" aria-label="Close"><app-icon name="close" [size]="28" [stroke]="1.2" /></button>
+    <button class="lb-nav prev" aria-label="Previous" (click)="$event.stopPropagation(); step(-1)"><app-icon name="left" [size]="34" [stroke]="1" /></button>
+    @for (g of [gallery[lightbox()!]]; track g.src) {
+      <figure (click)="$event.stopPropagation()">
+        <img [src]="g.src" [alt]="g.alt" />
+        <figcaption>{{ g.label }} <span>{{ lightbox()! + 1 }} / {{ gallery.length }}</span></figcaption>
+      </figure>
+    }
+    <button class="lb-nav next" aria-label="Next" (click)="$event.stopPropagation(); step(1)"><app-icon name="right" [size]="34" [stroke]="1" /></button>
+  </div>
+}

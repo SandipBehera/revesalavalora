@@ -1,0 +1,72 @@
+<div class="ty">
+  <div class="ty-bg" aria-hidden="true"><img src="images/build1.jpg" alt="" /></div>
+  <div class="ty-glow" aria-hidden="true"></div>
+  <div class="ty-particles" aria-hidden="true">
+    @for (p of particles; track $index) {
+      <i [style.left.%]="p.left" [style.width.px]="p.size" [style.height.px]="p.size"
+         [style.animation-delay.s]="p.delay" [style.animation-duration.s]="p.duration"></i>
+    }
+  </div>
+
+  <header class="ty-top wrap">
+    <a routerLink="/" class="brand" aria-label="La Valora home">
+      <svg class="mono" viewBox="0 0 100 100" aria-hidden="true">
+        @for (k of [0, 1, 2, 3, 4, 5]; track k) {
+          <polygon points="50,8 86.4,29 86.4,71 50,92 13.6,71 13.6,29"
+                   [attr.transform]="'translate(50 50) rotate(' + k * 7 + ') scale(' + (1 - k * 0.075) + ') translate(-50 -50)'" />
+        }
+      </svg>
+      <span><em>La</em> VALORA</span>
+    </a>
+    <a class="nav-call" [href]="'tel:' + phone"><app-icon name="phone" [size]="14" />{{ phoneDisplay }}</a>
+  </header>
+
+  <main class="ty-main wrap">
+    <section class="ty-card">
+      <svg class="ty-check" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="ty-ring" cx="60" cy="60" r="54" />
+        <path class="ty-tick" d="M38 62 l15 15 l30 -32" />
+      </svg>
+
+      <p class="eyebrow ty-in" style="--d:1">Enquiry Received</p>
+      <h1 class="ty-title ty-in" style="--d:2">
+        Thank you{{ name ? ',' : '.' }}
+        @if (name) { <em>{{ name }}.</em> }
+      </h1>
+      <p class="ty-lead ty-in" style="--d:3">
+        We've received your enquiry{{ config ? ' for a ' + config + ' villa' : '' }} at Revasa La Valora.
+        Our team will reach out to you shortly to arrange your exclusive site visit.
+      </p>
+
+      <ol class="ty-steps">
+        @for (s of steps; track s.title; let i = $index) {
+          <li class="ty-in" [style.--d]="4 + i">
+            <span class="ty-no">0{{ i + 1 }}</span>
+            <div>
+              <h3>{{ s.title }}</h3>
+              <p>{{ s.desc }}</p>
+            </div>
+          </li>
+        }
+      </ol>
+
+      <div class="ty-cta ty-in" style="--d:7">
+        <a routerLink="/" class="btn btn-gold"><app-icon name="left" [size]="16" />Back to La Valora</a>
+        <a [href]="'tel:' + phone" class="btn btn-ghost"><app-icon name="phone" [size]="16" />Call Now</a>
+        <a [href]="whatsapp" target="_blank" rel="noopener" class="btn btn-ghost">WhatsApp Us</a>
+      </div>
+    </section>
+
+    <div class="ty-facts ty-in" style="--d:8">
+      <div><strong>72.25</strong><span>Acres</span></div>
+      <div><strong>558</strong><span>Villas</span></div>
+      <div><strong>84,000+</strong><span>Sq.Ft Clubhouse</span></div>
+      <div><strong>70+</strong><span>Amenities</span></div>
+    </div>
+  </main>
+
+  <footer class="ty-foot wrap">
+    <span>RERA No: P01100010542 · HMDA: 012817/LO/HMDA/3450/SKP/2024</span>
+    <span>© {{ year }} Revasa La Valora</span>
+  </footer>
+</div>
